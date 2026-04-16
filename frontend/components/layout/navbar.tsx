@@ -15,7 +15,7 @@ export const Navbar = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="text-xl font-bold text-blue-600">
-            AdTech Platform
+            ЭрикTech
           </Link>
 
           {/* Desktop Navigation */}
@@ -28,7 +28,7 @@ export const Navbar = () => {
                   : 'text-gray-700 hover:text-blue-600'
               }`}
             >
-              Marketplace
+              Аукционы
             </Link>
             <Link
               href="/dashboard"
@@ -38,7 +38,7 @@ export const Navbar = () => {
                   : 'text-gray-700 hover:text-blue-600'
               }`}
             >
-              Dashboard
+              Дэшборд
             </Link>
             <Link
               href="/analytics"
@@ -48,7 +48,7 @@ export const Navbar = () => {
                   : 'text-gray-700 hover:text-blue-600'
               }`}
             >
-              Analytics
+              Аналитика
             </Link>
           </nav>
 
@@ -85,7 +85,7 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Marketplace
+                Аукционы
               </Link>
               <Link
                 href="/dashboard"
@@ -96,7 +96,7 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Dashboard
+                Дэшборд
               </Link>
               <Link
                 href="/analytics"
@@ -107,7 +107,7 @@ export const Navbar = () => {
                 }`}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Analytics
+                Аналитика
               </Link>
             </nav>
           </div>

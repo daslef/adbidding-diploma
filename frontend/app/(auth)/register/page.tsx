@@ -27,22 +27,22 @@ export default function RegisterPage() {
     e.preventDefault();
     
     if (!formData.name || !formData.email || !formData.password || !formData.companyName) {
-      toast.error("Missing Fields", {
-        description: "Please fill out all required fields"
+      toast.error("Не заполнены поля", {
+        description: "Пожалуйста заполните все необходимые поля"
       });
       return;
     }
     
     if (formData.password !== formData.confirmPassword) {
-      toast.error("Password Mismatch", {
-        description: "Passwords do not match"
+      toast.error("Не совпадают пароли", {
+        description: "Пароли не совпадают"
       });
       return;
     }
     
     if (formData.password.length < 6) {
-      toast.error("Password Too Short", {
-        description: "Password must be at least 6 characters long"
+      toast.error("Пароль слишком короткий", {
+        description: "Пароль должен быть не менее 6 символов"
       });
       return;
     }
@@ -57,13 +57,13 @@ export default function RegisterPage() {
         companyName: formData.companyName,
       });
       
-      toast.success("Registration Successful", {
-        description: "Your account has been created. Redirecting to marketplace..."
+      toast.success("Успешная регистрация", {
+        description: "Ваш аккаунт успешно создан. Перенаправляем..."
       });
       router.push('/marketplace');
     } catch (error: any) {
-      toast.error("Registration Failed", {
-        description: error.message || 'Please try again with different information.'
+      toast.error("Регистрация не удалась", {
+        description: error.message || 'Попробуйте снова.'
       });
     } finally {
       setIsSubmitting(false);
@@ -74,11 +74,11 @@ export default function RegisterPage() {
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4 py-12">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Create an account</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Создать аккаунт</h1>
           <p className="mt-2 text-gray-600">
-            Or{' '}
+            Или{' '}
             <Link href="/login" className="text-blue-600 hover:text-blue-800">
-              sign in to your existing account
+              войдите в существующий аккаунт
             </Link>
           </p>
         </div>
@@ -87,7 +87,7 @@ export default function RegisterPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label htmlFor="name" className="block text-sm font-medium text-gray-700">
-                Full Name
+                Полное имя
               </label>
               <input
                 id="name"
@@ -119,7 +119,7 @@ export default function RegisterPage() {
 
             <div>
               <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
-                Company Name
+                Компания
               </label>
               <input
                 id="companyName"
@@ -135,7 +135,7 @@ export default function RegisterPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                Пароль
               </label>
               <input
                 id="password"
@@ -151,7 +151,7 @@ export default function RegisterPage() {
 
             <div>
               <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
-                Confirm Password
+                Подтвердите пароль
               </label>
               <input
                 id="confirmPassword"
@@ -179,13 +179,13 @@ export default function RegisterPage() {
           </form>
           
           <p className="mt-6 text-xs text-gray-500 text-center">
-            By creating an account, you agree to our{' '}
+            Я ознакомлен с соглашением {' '}
             <a href="#" className="text-blue-600 hover:text-blue-800">
-              Terms of Service
+              об обработке данных
             </a>{' '}
-            and{' '}
+            и{' '}
             <a href="#" className="text-blue-600 hover:text-blue-800">
-              Privacy Policy
+              правилами сервиса
             </a>
           </p>
         </div>

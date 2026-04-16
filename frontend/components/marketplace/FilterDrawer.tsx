@@ -120,7 +120,7 @@ export const FilterDrawer = ({
                   className="h-4 w-4 text-blue-600"
                 />
                 <label htmlFor="status-all" className="text-sm text-gray-700">
-                  All Listings
+                  Все Аукционы
                 </label>
               </div>
               <div className="flex items-center gap-2">
@@ -134,7 +134,7 @@ export const FilterDrawer = ({
                   className="h-4 w-4 text-blue-600"
                 />
                 <label htmlFor="status-active" className="text-sm text-gray-700">
-                  Active Only
+                  Только активные
                 </label>
               </div>
               <div className="flex items-center gap-2">
@@ -148,7 +148,7 @@ export const FilterDrawer = ({
                   className="h-4 w-4 text-blue-600"
                 />
                 <label htmlFor="status-ended" className="text-sm text-gray-700">
-                  Ended Only
+                  Только завершенные
                 </label>
               </div>
             </div>
@@ -157,10 +157,10 @@ export const FilterDrawer = ({
         
         <div className="sticky bottom-0 p-4 bg-white border-t flex gap-4">
           <Button variant="outline" className="flex-1" onClick={handleReset}>
-            Reset Filters
+            Сбросить
           </Button>
           <Button className="flex-1" onClick={handleApply}>
-            Apply Filters
+            Применить
           </Button>
         </div>
       </div>

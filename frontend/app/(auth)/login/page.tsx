@@ -44,11 +44,11 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Sign in to your account</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Войти в аккаунт</h1>
           <p className="mt-2 text-gray-600">
-            Or{' '}
+            Или{' '}
             <Link href="/register" className="text-blue-600 hover:text-blue-800">
-              create a new account
+              создать новый аккаунт
             </Link>
           </p>
         </div>
@@ -73,7 +73,7 @@ export default function LoginPage() {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
+                Пароль
               </label>
               <input
                 id="password"
@@ -96,13 +96,13 @@ export default function LoginPage() {
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
                 <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
-                  Remember me
+                  Запомнить
                 </label>
               </div>
 
               <div className="text-sm">
                 <a href="#" className="text-blue-600 hover:text-blue-800">
-                  Forgot your password?
+                  Забыли пароль?
                 </a>
               </div>
             </div>
