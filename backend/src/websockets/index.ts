@@ -1,18 +1,18 @@
-import type { Server } from "socket.io";
+import type { Server, Socket } from "socket.io";
 import { getRedisSubscriber } from "../config/redis.js";
 import { logger } from "../utils/logger.js";
 import { socketAuth } from "../middleware/auth.js";
 import { handleBidding } from "./bidding.js";
 import { handleUserNotifications } from "./notifications.js";
 
-module.exports = (io: Server) => {
+const ws = (io: Server) => {
   type SocketWithAuth = Socket & {
     userId: string;
-  }
+  };
 
   io.use(socketAuth);
 
-  io.on('connection', (socket: SocketWithAuth) => {
+  io.on("connection", (socket: SocketWithAuth) => {
     logger.info(`User connected: ${socket.id}, userId: ${socket.userId}`);
 
     // Join user to their private channel
@@ -21,26 +21,28 @@ module.exports = (io: Server) => {
     }
 
     // Handle joining an ad spot's bidding room
-    socket.on('join-bidding', (adSpotId: string) => {
+    socket.on("join-bidding", (adSpotId: string) => {
       socket.join(`bidding:${adSpotId}`);
-      logger.info(`User ${socket.userId} joined bidding for ad spot ${adSpotId}`);
+      logger.info(
+        `User ${socket.userId} joined bidding for ad spot ${adSpotId}`
+      );
     });
 
     // Handle leaving an ad spot's bidding room
-    socket.on('leave-bidding', (adSpotId: string) => {
+    socket.on("leave-bidding", (adSpotId: string) => {
       socket.leave(`bidding:${adSpotId}`);
       logger.info(`User ${socket.userId} left bidding for ad spot ${adSpotId}`);
     });
 
     // Handle new bid submission
-    socket.on('place-bid', handleBidding(io, socket));
+    socket.on("place-bid", handleBidding(io, socket));
 
     // Handle notification subscriptions
-    socket.on('subscribe-notifications', () => {
+    socket.on("subscribe-notifications", () => {
       handleUserNotifications(io, socket);
     });
 
-    socket.on('disconnect', () => {
+    socket.on("disconnect", () => {
       logger.info(`User disconnected: ${socket.id}`);
     });
   });
@@ -49,29 +51,29 @@ module.exports = (io: Server) => {
   const subscriber = getRedisSubscriber();
 
   // Subscribe to channels
-  subscriber.subscribe('bid-updates');
-  subscriber.subscribe('auction-end');
-  subscriber.subscribe('user-notification');
+  subscriber.subscribe("bid-updates");
+  subscriber.subscribe("auction-end");
+  subscriber.subscribe("user-notification");
 
-  subscriber.on('message', (channel, message) => {
+  subscriber.on("message", (channel, message) => {
     try {
       const data = JSON.parse(message);
 
       switch (channel) {
-        case 'bid-updates':
+        case "bid-updates":
           // Broadcast to everyone in the bidding room
-          io.to(`bidding:${data.adSpotId}`).emit('new-bid', data);
+          io.to(`bidding:${data.adSpotId}`).emit("new-bid", data);
           break;
 
-        case 'auction-end':
+        case "auction-end":
           // Broadcast auction end event
-          io.to(`bidding:${data.adSpotId}`).emit('auction-ended', data);
+          io.to(`bidding:${data.adSpotId}`).emit("auction-ended", data);
           break;
 
-        case 'user-notification':
+        case "user-notification":
           // Send notification to specific user
           if (data.userId) {
-            io.to(`user:${data.userId}`).emit('new-notification', data);
+            io.to(`user:${data.userId}`).emit("new-notification", data);
           }
           break;
 
@@ -80,11 +82,16 @@ module.exports = (io: Server) => {
           break;
       }
     } catch (error: unknown) {
-      logger.error(`Error processing Redis message: ${(error as Error).message}`, {
-        channel,
-        message,
-        error: (error as Error).stack
-      });
+      logger.error(
+        `Error processing Redis message: ${(error as Error).message}`,
+        {
+          channel,
+          message,
+          error: (error as Error).stack,
+        }
+      );
     }
   });
 };
+
+export default ws;

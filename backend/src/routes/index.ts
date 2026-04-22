@@ -3,7 +3,7 @@ import { authRoutes } from "./authRoutes.js";
 import { adSpotRoutes } from './adSpotRoutes.js';
 import { bidRoutes } from "./bidRoutes.js";
 import { userRoutes } from "./userRoutes.js";
-import watchlistRoutes from './watchlistRoutes.js'
+import {watchlistRoutes } from './watchlistRoutes.js'
 
 const router = Router();
 
