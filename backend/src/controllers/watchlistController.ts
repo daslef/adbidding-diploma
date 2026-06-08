@@ -1,6 +1,6 @@
 import type { Request, Response } from 'express';
 import { WatchedListing, AdSpot, User } from '../models/index.js';
-import { getRedisClient } from '../config/redis.js';
+import { getRedisClient } from '../providers/redis.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { NotFoundError, UnauthorizedError } from '../utils/errors.js'
 

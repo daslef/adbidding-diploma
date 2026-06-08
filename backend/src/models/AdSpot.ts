@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import type { Model, InferAttributes, InferCreationAttributes, CreationOptional, Attributes } from "sequelize";
-import { sequelize } from '../config/database.js'
+import { sequelize } from '../providers/database/connection.js'
 
 
 interface AdSpotModel extends Model<InferAttributes<AdSpotModel>, InferCreationAttributes<AdSpotModel>> {

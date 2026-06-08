@@ -1,4 +1,3 @@
-// User Types
 export interface User {
   id: string;
   name: string;
@@ -14,7 +13,6 @@ export interface AuthResponse {
   refreshToken?: string;
 }
 
-// AdSpot Types
 export interface AdSpot {
   id: string | number;
   title: string;
@@ -31,31 +29,8 @@ export interface AdSpot {
   eventCount: number;
   estimatedViews: number;
   seasonDuration: string;
-  keyEvents?: string[];
-  customTheme?: string;
-  events?: AdSpotEvent[];
-  theme?: AdSpotTheme;
 }
 
-export interface AdSpotEvent {
-  id: string | number;
-  adSpotId: string | number;
-  eventName: string;
-  eventDate?: string;
-}
-
-export interface AdSpotTheme {
-  id: string | number;
-  adSpotId: string | number;
-  themeName: string;
-  primaryColor: string;
-  secondaryColor: string;
-  accentColor: string;
-  textPrimaryColor: string;
-  textSecondaryColor: string;
-}
-
-// Bid Types
 export interface Bid {
   id: string | number;
   adSpotId: string | number;
@@ -66,7 +41,6 @@ export interface Bid {
   isHighestBid: boolean;
 }
 
-// Notification Types
 export interface Notification {
   id: string | number;
   userId: string | number;
@@ -77,7 +51,6 @@ export interface Notification {
   relatedAdSpotId?: string | number;
 }
 
-// API Response Types
 export interface PaginatedResponse<T> {
   data: T[];
   totalPages: number;

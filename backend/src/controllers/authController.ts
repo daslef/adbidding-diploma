@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken';
 
 import { User } from '../models/index.js'
-import { getRedisClient } from '../config/redis.js';
+import { getRedisClient } from '../providers/redis.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { BadRequestError, NotFoundError, UnauthorizedError } from '../utils/errors.js'
 import { logger } from '../utils/logger.js';
@@ -43,14 +43,11 @@ export const registerUser = asyncHandler(async (req: Request, res: Response) => 
 
   logger.info(`Пользователь успешно зарегистрирован: ${user.id}`);
 
-  // генерация токенов
+  // генерация токенов, сохранение рефреш-токена в Redis
   const accessToken = generateAccessToken(user.id);
   const refreshToken = generateRefreshToken(user.id);
-
-  // сохранение рефреш-токена в Redis
   await redis.set(`refreshToken:${user.id}`, refreshToken, 'EX', 7 * 24 * 60 * 60); // 7 days
 
-  // Send response
   res.status(201).json({
     user: {
       id: user.id,

@@ -3,7 +3,7 @@ import bcrypt from "bcryptjs";
 
 import type { Attributes } from "sequelize";
 import { User, Notification } from "../models/index.js";
-import { getRedisClient } from "../config/redis.js";
+import { getRedisClient } from "../providers/redis.js";
 import { asyncHandler } from "../middleware/asyncHandler.js";
 import { NotFoundError, BadRequestError, ForbiddenError, UnauthorizedError } from '../utils/errors.js';
 import * as notificationsProvider from '../utils/notifications.js'

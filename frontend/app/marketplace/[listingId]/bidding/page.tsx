@@ -320,19 +320,6 @@ const BiddingInterface = () => {
                     </div>
                   ))}
                 </div>
-
-                {/* Key Events */}
-                <div className="mt-6">
-                  <h3 className="text-lg font-semibold mb-3 text-foreground">Featured Events</h3>
-                  <div className="grid grid-cols-2 gap-2">
-                  {adSpot.keyEvents && adSpot.keyEvents.map((event, index) => (
-                    <div key={index} className="flex items-center gap-2 text-muted-foreground">
-                      <div className="w-2 h-2 bg-accent rounded-full"></div>
-                      {event}
-                    </div>
-                  ))}
-                  </div>
-                </div>
               </div>
             </div>
 

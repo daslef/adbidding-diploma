@@ -1,7 +1,7 @@
 import type { Server, Socket } from 'socket.io';
 
 import { AdSpot, Bid, User } from '../models/index.js';
-import { getRedisClient } from '../config/redis.js';
+import { getRedisClient } from '../providers/redis.js';
 import { logger } from '../utils/logger.js';
 import * as notificationProvider from '../utils/notifications.js'
 

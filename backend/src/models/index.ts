@@ -1,9 +1,7 @@
-import { sequelize } from '../config/database.js';
+import { sequelize } from '../providers/database/connection.js';
 
 import { User } from './User.js';
 import { AdSpot } from './AdSpot.js';
-import { AdSpotEvent } from './AdSpotEvent.js';
-import { AdSpotTheme } from './AdSpotTheme.js';
 import { Bid } from './Bid.js';
 import { WatchedListing } from './WatchedListing.js';
 import { Notification } from './Notification.js';
@@ -11,12 +9,6 @@ import { Transaction } from './Transaction.js';
 
 User.hasMany(AdSpot, { foreignKey: 'owner_id', as: 'ownedAdSpots' });
 AdSpot.belongsTo(User, { foreignKey: 'owner_id', as: 'owner' });
-
-AdSpot.hasMany(AdSpotEvent, { foreignKey: 'ad_spot_id', as: 'events' });
-AdSpotEvent.belongsTo(AdSpot, { foreignKey: 'ad_spot_id' });
-
-AdSpot.hasOne(AdSpotTheme, { foreignKey: 'ad_spot_id', as: 'theme' });
-AdSpotTheme.belongsTo(AdSpot, { foreignKey: 'ad_spot_id' });
 
 AdSpot.hasMany(Bid, { foreignKey: 'ad_spot_id', as: 'bids' });
 Bid.belongsTo(AdSpot, { foreignKey: 'ad_spot_id' });
@@ -46,8 +38,6 @@ export {
   sequelize,
   User,
   AdSpot,
-  AdSpotEvent,
-  AdSpotTheme,
   Bid,
   WatchedListing,
   Notification,

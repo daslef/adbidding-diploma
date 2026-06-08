@@ -1,6 +1,6 @@
 import type { Server, Socket } from "socket.io";
 import { Notification } from "../models/index.js";
-import { getRedisClient } from "../config/redis.js";
+import { getRedisClient } from "../providers/redis.js";
 import { logger } from "../utils/logger.js";
 
 

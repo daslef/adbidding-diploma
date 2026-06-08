@@ -1,7 +1,7 @@
 import type { Request, Response } from 'express';
 
-import { AdSpot, AdSpotEvent, AdSpotTheme, WatchedListing } from '../models/index.js';
-import { getRedisClient } from '../config/redis.js';
+import { AdSpot, WatchedListing } from '../models/index.js';
+import { getRedisClient } from '../providers/redis.js';
 import { asyncHandler } from '../middleware/asyncHandler.js';
 import { NotFoundError, UnauthorizedError } from '../utils/errors.js';
 
@@ -54,7 +54,6 @@ export const getAllAdSpots = asyncHandler(async (req: Request, res: Response) =>
     limit: limit,
     offset,
     order: [['created_at', 'DESC']],
-    include: ['events', 'theme']
   });
 
   const result = {
@@ -88,15 +87,11 @@ export const getAdSpotById = asyncHandler(async (req: Request, res: Response) =>
     return res.json({
       ...cachedData,
       currentPrice: parseFloat(cachedData.currentPrice),
-      totalBids: parseInt(cachedData.totalBids),
-      events: JSON.parse(cachedData.events || '[]'),
-      theme: cachedData.theme ? JSON.parse(cachedData.theme) : null
+      totalBids: parseInt(cachedData.totalBids)
     });
   }
 
-  const adSpot = await AdSpot.findByPk(id, {
-    include: ['events', 'theme']
-  });
+  const adSpot = await AdSpot.findByPk(id, {});
 
   if (!adSpot) {
     throw new NotFoundError('Спот не найден');
@@ -118,8 +113,6 @@ export const getAdSpotById = asyncHandler(async (req: Request, res: Response) =>
     eventCount: adSpot.eventCount.toString(),
     estimatedViews: adSpot.estimatedViews.toString(),
     seasonDuration: adSpot.seasonDuration,
-    events: JSON.stringify(adSpot.events || []),
-    theme: adSpot.theme ? JSON.stringify(adSpot.theme) : null
   };
 
   await redis.hset(cacheKey, cacheData);
@@ -137,8 +130,7 @@ export const createAdSpot = asyncHandler(async (req: Request, res: Response) => 
   const {
     title, description, startingPrice, reservePrice,
     endDate, imageUrl, location, dimensions,
-    eventCount, estimatedViews, seasonDuration, events,
-    theme
+    eventCount, estimatedViews, seasonDuration,
   } = req.body;
 
   if (!req.user) {
@@ -162,22 +154,6 @@ export const createAdSpot = asyncHandler(async (req: Request, res: Response) => 
     seasonDuration,
     ownerId: req.user.id,
   });
-
-  if (events && events.length > 0) {
-    await Promise.all(events.map(event =>
-      AdSpotEvent.create({
-        adSpotId: adSpot.id,
-        eventName: event
-      })
-    ));
-  }
-
-  if (theme) {
-    await AdSpotTheme.create({
-      adSpotId: adSpot.id,
-      ...theme
-    });
-  }
 
   await redis.del('adspots:list:*');
 
@@ -206,38 +182,10 @@ export const updateAdSpot = asyncHandler(async (req: Request, res: Response) => 
 
   await adSpot.update(updatedFields);
 
-  if (updatedFields.events) {
-    await AdSpotEvent.destroy({ where: { adSpotId: id } });
-
-    if (updatedFields.events.length > 0) {
-      await Promise.all(updatedFields.events.map(event =>
-        AdSpotEvent.create({
-          adSpotId: adSpot.id,
-          eventName: event
-        })
-      ));
-    }
-  }
-
-  if (updatedFields.theme) {
-    const existingTheme = await AdSpotTheme.findOne({ where: { adSpotId: id } });
-
-    if (existingTheme) {
-      await existingTheme.update(updatedFields.theme);
-    } else {
-      await AdSpotTheme.create({
-        adSpotId: adSpot.id,
-        ...updatedFields.theme
-      });
-    }
-  }
-
   await redis.del(`adspot:${id}`);
   await redis.del('adspots:list:*');
 
-  const updatedAdSpot = await AdSpot.findByPk(id, {
-    include: ['events', 'theme']
-  });
+  const updatedAdSpot = await AdSpot.findByPk(id);
 
   res.json(updatedAdSpot);
 });

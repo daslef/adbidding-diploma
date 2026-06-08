@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 
 import { UnauthorizedError, ForbiddenError } from '../utils/errors.js';
 import { User } from '../models/index.js'
-import { getRedisClient } from "../config/redis.js";
+import { getRedisClient } from "../providers/redis.js";
 
 
 const redis = getRedisClient();

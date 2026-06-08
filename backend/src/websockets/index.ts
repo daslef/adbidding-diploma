@@ -1,5 +1,5 @@
 import type { Server, Socket } from "socket.io";
-import { getRedisSubscriber } from "../config/redis.js";
+import { getRedisSubscriber } from "../providers/redis.js";
 import { logger } from "../utils/logger.js";
 import { socketAuth } from "../middleware/auth.js";
 import { handleBidding } from "./bidding.js";

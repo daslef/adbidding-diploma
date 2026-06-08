@@ -1,5 +1,5 @@
 import { Notification, User } from "../models/index.js";
-import { getRedisClient } from "../config/redis.js";
+import { getRedisClient } from "../providers/redis.js";
 import { logger } from "./logger.js";
 
 const redis = getRedisClient();

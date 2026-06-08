@@ -2,12 +2,14 @@ import dotenv from "dotenv";
 import { Sequelize } from "sequelize";
 
 dotenv.config();
-const connectionString = process.env.DATABASE_URL!;
 
-export const sequelize = new Sequelize(connectionString, {
+const DATABASE_URL = process.env['DATABASE_URL']!;
+const IS_DEVELOPMENT = process.env['NODE_ENV'] === "development"
+
+export const sequelize = new Sequelize(DATABASE_URL, {
   dialect: "postgres",
   protocol: "postgres",
-  logging: process.env.NODE_ENV === "development" ? console.log : false,
+  logging: IS_DEVELOPMENT ? console.log : false,
   pool: {
     max: 10,
     min: 0,
@@ -25,14 +27,14 @@ export const sequelize = new Sequelize(connectionString, {
 export const connectToDatabase = async () => {
   try {
     await sequelize.authenticate();
-    console.log("Database connection established successfully");
+    console.log("Подключение к базе данных успешно");
 
-    if (process.env.NODE_ENV === "development") {
+    if (IS_DEVELOPMENT) {
       await sequelize.sync();
-      console.log("Database models synchronized");
+      console.log("Модели синхронизированы");
     }
   } catch (error) {
-    console.error("Unable to connect to the database:", error);
+    console.error("Не удалось подключиться к базе данных:", error);
     throw error;
   }
 };
