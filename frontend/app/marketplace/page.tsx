@@ -4,9 +4,10 @@ import React, { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Search, Filter } from "lucide-react";
 import { getAdSpots } from "@/lib/api/adSpots";
-import { debounce } from "@/lib/utils";
 import { AdSpot } from "@/types";
 import { toast } from "sonner";
+import Image from "next/image";
+import { formatCurrency } from "@/lib/utils";
 
 export default function MarketplacePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -19,7 +20,6 @@ export default function MarketplacePage() {
     status: "active",
   });
 
-  // Set up debounced search
   useEffect(() => {
     const handler = setTimeout(() => {
       setDebouncedSearch(searchQuery);
@@ -30,7 +30,7 @@ export default function MarketplacePage() {
     };
   }, [searchQuery]);
 
-  // Fetch ad spots
+  // Fetch spots
   const { data, isLoading, isError } = useQuery({
     queryKey: ["adSpots", page, debouncedSearch, filters],
     queryFn: () =>
@@ -41,8 +41,8 @@ export default function MarketplacePage() {
         maxPrice: filters.maxPrice,
         status: filters.status,
       }),
-    onError: (error: any) => {
-      toast.error(error.message || "Ошибка загрузки");
+    onError: (error: unknown) => {
+      toast.error((error as Error).message || "Ошибка загрузки");
     },
   });
 
@@ -84,7 +84,6 @@ export default function MarketplacePage() {
       ));
   };
 
-  // Render each ad spot card
   const renderAdSpotCard = (adSpot: AdSpot) => {
     return (
       <a
@@ -94,14 +93,16 @@ export default function MarketplacePage() {
       >
         <div className="bg-white rounded-xl shadow-sm overflow-hidden hover:shadow-md transition-shadow duration-200">
           <div className="aspect-video relative">
-            <img
+            <Image
               src={adSpot.imageUrl}
               alt={adSpot.title}
+              width={400}
+              height={320}
               className="w-full h-full object-cover"
             />
             <div className="absolute top-3 right-3 bg-black/75 text-white px-3 py-1 rounded-full text-sm">
               <span className="font-medium">
-                ${adSpot.currentPrice.toLocaleString()}
+                {formatCurrency(adSpot.currentPrice)}
               </span>
             </div>
           </div>
@@ -118,17 +119,7 @@ export default function MarketplacePage() {
 
             <div className="grid grid-cols-3 gap-4 text-sm">
               <div className="flex items-center gap-1 text-gray-600">
-                <span>{adSpot.seasonDuration?.split(" ")[0] || "Season"}</span>
-              </div>
-              <div className="flex items-center gap-1 text-gray-600">
-                <span>
-                  {adSpot.estimatedViews
-                    ? `${adSpot.estimatedViews / 1000}K`
-                    : "N/A"}
-                </span>
-              </div>
-              <div className="flex items-center gap-1 text-gray-600">
-                <span>{adSpot.location?.split(" ")[0] || "Location"}</span>
+                <span>{adSpot.location?.split(" ")[0] || "Локация"}</span>
               </div>
             </div>
 
@@ -146,7 +137,6 @@ export default function MarketplacePage() {
     );
   };
 
-  // Render pagination controls
   const renderPagination = () => {
     if (!data || data.totalPages <= 1) return null;
 
@@ -174,7 +164,7 @@ export default function MarketplacePage() {
               >
                 {pageNum}
               </button>
-            )
+            ),
           )}
 
           <button

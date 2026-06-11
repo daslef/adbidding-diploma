@@ -244,7 +244,7 @@ export const placeBid = asyncHandler(async (req, res) => {
   if (previousHighestBid && previousHighestBid.userId !== userId) {
     await createNotification({
       userId: previousHighestBid.userId,
-      message: `You've been outbid on "${adSpot.title}" by ${user.companyName}`,
+      message: `Ваша ставка по аукциону "${adSpot.title}" перебита ${user.companyName}`,
       type: 'outbid',
       relatedAdSpotId: id
     });

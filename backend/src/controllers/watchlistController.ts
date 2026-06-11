@@ -34,7 +34,7 @@ export const getUserWatchlist = asyncHandler(async (req: Request, res: Response)
         as: 'AdSpot',
         attributes: [
           'id', 'title', 'currentPrice', 'status', 'endDate',
-          'imageUrl', 'location', 'estimatedViews', 'totalBids'
+          'imageUrl', 'location', 'totalBids'
         ]
       }
     ],

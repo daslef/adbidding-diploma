@@ -1,21 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import {
-  ArrowRight,
-  CheckCircle,
-  TrendingUp,
-  Users,
-  Trophy,
-  Clock,
-} from "lucide-react";
+import { ArrowRight, TrendingUp, Trophy } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function Home() {
-  const [scrollY, setScrollY] = useState(0);
+  const [, setScrollY] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -81,7 +73,7 @@ export default function Home() {
       {/* Stats Bar */}
       <section className="bg-secondary/30 py-10 border-y border-border/50">
         <div className="container px-4 mx-auto">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             <motion.div
               className="flex flex-col items-center"
               initial={{ opacity: 0, y: 20 }}
@@ -145,7 +137,7 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             <motion.div
               className="bg-card rounded-xl p-8 border border-border shadow-sm"
               initial={{ opacity: 0, y: 20 }}
@@ -154,7 +146,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.1 }}
             >
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-accent/10 text-accent mb-6">
-                <TrendingUp size={24} />
+                <TrendingUp size={24} color="black" />
               </div>
               <h3 className="text-xl font-semibold mb-3">
                 Торги в реальном времени
@@ -172,7 +164,7 @@ export default function Home() {
               transition={{ duration: 0.5, delay: 0.3 }}
             >
               <div className="w-12 h-12 flex items-center justify-center rounded-full bg-accent/10 text-accent mb-6">
-                <Trophy size={24} />
+                <Trophy size={24} color="black" />
               </div>
               <h3 className="text-xl font-semibold mb-3">Премиум-доступ</h3>
               <p className="text-muted-foreground">
@@ -202,23 +194,23 @@ export default function Home() {
             </motion.div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {[
               {
                 step: "01",
                 title: "Изучите аукционы",
-                description: "TODO",
+                description: "Выберите актуальный аукцион",
               },
               {
                 step: "02",
                 title: "Делайте ставки",
-                description: "TODO",
+                description:
+                  "Делайте ставки и получайте уведомления о событиях",
               },
               {
                 step: "03",
                 title: "Побеждайте!",
-                description:
-                  "Получайте уведомления в реальном времени о событиях аукциона",
+                description: "И получите полное сопровождение сделки",
               },
             ].map((item, index) => (
               <motion.div
@@ -230,7 +222,7 @@ export default function Home() {
                 transition={{ duration: 0.5, delay: 0.1 * index }}
               >
                 <div className="bg-card rounded-xl p-8 border border-border shadow-sm h-full">
-                  <div className="text-5xl font-bold text-accent/20 mb-4">
+                  <div className="text-5xl font-bold text-black/20 mb-4">
                     {item.step}
                   </div>
                   <h3 className="text-xl font-semibold mb-3">{item.title}</h3>

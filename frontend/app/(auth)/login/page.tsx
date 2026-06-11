@@ -1,39 +1,41 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { login } = useAuth();
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!email || !password) {
       toast.error("Invalid Input", {
-        description: "Please enter both email and password"
+        description: "Please enter both email and password",
       });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
       await login({ email, password });
-      toast.success("Success", {
-        description: "Login successful! Redirecting you to marketplace..."
+      toast.success("Успешно", {
+        description: "Вы вошли в систему! Перенаправляем на главную...",
       });
-      router.push('/marketplace');
-    } catch (error: any) {
+      router.push("/marketplace");
+    } catch (error: unknown) {
       toast.error("Login Failed", {
-        description: error.message || 'Please check your credentials and try again.'
+        description:
+          (error as Error).message ||
+          "Пожалуйста, проверьте данные и попробуйте снова.",
       });
     } finally {
       setIsSubmitting(false);
@@ -44,20 +46,26 @@ export default function LoginPage() {
     <div className="min-h-screen flex flex-col justify-center items-center bg-gray-50 px-4">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">Войти в аккаунт</h1>
+          <h1 className="text-3xl font-bold text-gray-900">Войти в систему</h1>
           <p className="mt-2 text-gray-600">
-            Или{' '}
-            <Link href="/register" className="text-blue-600 hover:text-blue-800">
-              создать новый аккаунт
+            Или{" "}
+            <Link
+              href="/register"
+              className="text-blue-600 hover:text-blue-800"
+            >
+              создать аккаунт
             </Link>
           </p>
         </div>
-        
+
         <div className="bg-white p-8 rounded-lg shadow-md">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
+                Почта
               </label>
               <input
                 id="email"
@@ -72,7 +80,10 @@ export default function LoginPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Пароль
               </label>
               <input
@@ -95,7 +106,10 @@ export default function LoginPage() {
                   type="checkbox"
                   className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
                 />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-700">
+                <label
+                  htmlFor="remember-me"
+                  className="ml-2 block text-sm text-gray-700"
+                >
                   Запомнить
                 </label>
               </div>
@@ -112,22 +126,51 @@ export default function LoginPage() {
                 type="submit"
                 disabled={isSubmitting}
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                  isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                  isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                 }`}
               >
-                {isSubmitting ? 'Signing in...' : 'Sign in'}
+                {isSubmitting ? "Signing in..." : "Sign in"}
               </button>
             </div>
           </form>
-          
+
           {/* Demo credentials for development */}
-          {process.env.NODE_ENV === 'development' && (
+          {process.env.NODE_ENV === "development" && (
             <div className="mt-6 p-4 bg-gray-50 rounded-md">
-              <h3 className="text-sm font-medium text-gray-700">Demo Credentials</h3>
-              <div className="mt-2 text-xs text-gray-500">
-                <p>Admin: admin@example.com / admin123</p>
-                <p>User: john@example.com / user123</p>
-              </div>
+              <h3 className="text-sm font-medium text-gray-700">
+                Тестовые данные
+              </h3>
+              <table className="mt-2 w-full text-xs text-gray-500">
+                <thead>
+                  <tr>
+                    <th className="text-left">Роль</th>
+                    <th className="text-left">Логин</th>
+                    <th className="text-left">Пароль</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>модератор</td>
+                    <td>admin@example.com</td>
+                    <td>admin123</td>
+                  </tr>
+                  <tr>
+                    <td>продавец</td>
+                    <td>bob@example.com</td>
+                    <td>user123</td>
+                  </tr>
+                  <tr>
+                    <td>пользователь 1</td>
+                    <td>charlie@example.com</td>
+                    <td>user123</td>
+                  </tr>
+                  <tr>
+                    <td>пользователь 2</td>
+                    <td>alice@example.com</td>
+                    <td>user123</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           )}
         </div>

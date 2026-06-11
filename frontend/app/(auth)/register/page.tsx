@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import Link from 'next/link';
-import { useAuth } from '@/context/AuthContext';
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 
 export default function RegisterPage() {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    companyName: '',
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    companyName: "",
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const { register } = useAuth();
@@ -20,35 +20,40 @@ export default function RegisterPage() {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.name || !formData.email || !formData.password || !formData.companyName) {
+
+    if (
+      !formData.name ||
+      !formData.email ||
+      !formData.password ||
+      !formData.companyName
+    ) {
       toast.error("Не заполнены поля", {
-        description: "Пожалуйста заполните все необходимые поля"
+        description: "Пожалуйста заполните все необходимые поля",
       });
       return;
     }
-    
+
     if (formData.password !== formData.confirmPassword) {
       toast.error("Не совпадают пароли", {
-        description: "Пароли не совпадают"
+        description: "Пароли не совпадают",
       });
       return;
     }
-    
+
     if (formData.password.length < 6) {
       toast.error("Пароль слишком короткий", {
-        description: "Пароль должен быть не менее 6 символов"
+        description: "Пароль должен быть не менее 6 символов",
       });
       return;
     }
-    
+
     setIsSubmitting(true);
-    
+
     try {
       await register({
         name: formData.name,
@@ -56,14 +61,14 @@ export default function RegisterPage() {
         password: formData.password,
         companyName: formData.companyName,
       });
-      
+
       toast.success("Успешная регистрация", {
-        description: "Ваш аккаунт успешно создан. Перенаправляем..."
+        description: "Ваш аккаунт успешно создан. Перенаправляем...",
       });
-      router.push('/marketplace');
+      router.push("/marketplace");
     } catch (error: any) {
       toast.error("Регистрация не удалась", {
-        description: error.message || 'Попробуйте снова.'
+        description: error.message || "Попробуйте снова.",
       });
     } finally {
       setIsSubmitting(false);
@@ -76,17 +81,20 @@ export default function RegisterPage() {
         <div className="text-center mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Создать аккаунт</h1>
           <p className="mt-2 text-gray-600">
-            Или{' '}
+            Или{" "}
             <Link href="/login" className="text-blue-600 hover:text-blue-800">
               войдите в существующий аккаунт
             </Link>
           </p>
         </div>
-        
+
         <div className="bg-white p-8 rounded-lg shadow-md">
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
-              <label htmlFor="name" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="name"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Полное имя
               </label>
               <input
@@ -102,7 +110,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Email
               </label>
               <input
@@ -118,7 +129,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="companyName" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="companyName"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Компания
               </label>
               <input
@@ -134,7 +148,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Пароль
               </label>
               <input
@@ -150,7 +167,10 @@ export default function RegisterPage() {
             </div>
 
             <div>
-              <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+              <label
+                htmlFor="confirmPassword"
+                className="block text-sm font-medium text-gray-700"
+              >
                 Подтвердите пароль
               </label>
               <input
@@ -170,20 +190,20 @@ export default function RegisterPage() {
                 type="submit"
                 disabled={isSubmitting}
                 className={`w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 ${
-                  isSubmitting ? 'opacity-70 cursor-not-allowed' : ''
+                  isSubmitting ? "opacity-70 cursor-not-allowed" : ""
                 }`}
               >
-                {isSubmitting ? 'Creating account...' : 'Create account'}
+                {isSubmitting ? "Создание аккаунта..." : "Создать аккаунт"}
               </button>
             </div>
           </form>
-          
+
           <p className="mt-6 text-xs text-gray-500 text-center">
-            Я ознакомлен с соглашением {' '}
+            Я ознакомлен с соглашением{" "}
             <a href="#" className="text-blue-600 hover:text-blue-800">
               об обработке данных
-            </a>{' '}
-            и{' '}
+            </a>{" "}
+            и{" "}
             <a href="#" className="text-blue-600 hover:text-blue-800">
               правилами сервиса
             </a>

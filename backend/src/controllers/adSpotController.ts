@@ -109,10 +109,7 @@ export const getAdSpotById = asyncHandler(async (req: Request, res: Response) =>
     status: adSpot.status,
     imageUrl: adSpot.imageUrl,
     location: adSpot.location,
-    dimensions: adSpot.dimensions,
     eventCount: adSpot.eventCount.toString(),
-    estimatedViews: adSpot.estimatedViews.toString(),
-    seasonDuration: adSpot.seasonDuration,
   };
 
   await redis.hset(cacheKey, cacheData);
@@ -129,8 +126,8 @@ export const getAdSpotById = asyncHandler(async (req: Request, res: Response) =>
 export const createAdSpot = asyncHandler(async (req: Request, res: Response) => {
   const {
     title, description, startingPrice, reservePrice,
-    endDate, imageUrl, location, dimensions,
-    eventCount, estimatedViews, seasonDuration,
+    endDate, imageUrl, location,
+    eventCount,
   } = req.body;
 
   if (!req.user) {
@@ -148,10 +145,7 @@ export const createAdSpot = asyncHandler(async (req: Request, res: Response) => 
     totalBids: 0,
     imageUrl,
     location,
-    dimensions,
     eventCount,
-    estimatedViews,
-    seasonDuration,
     ownerId: req.user.id,
   });
 

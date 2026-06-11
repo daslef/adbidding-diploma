@@ -25,10 +25,7 @@ export interface AdSpot {
   totalBids: number;
   imageUrl: string;
   location: string;
-  dimensions: string;
   eventCount: number;
-  estimatedViews: number;
-  seasonDuration: string;
 }
 
 export interface Bid {
